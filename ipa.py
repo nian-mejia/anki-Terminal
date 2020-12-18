@@ -77,9 +77,15 @@ def lexico():
         try:
             ipa2 = titles[3].text
             ipa2 = ipa2.replace("r", "ɹ")
-            print(ipa2)
+            if ipa != ipa2:
+                print(ipa2)
         except:
             pass
+        if not ipa:
+            ipa = titles[0].text
+            ipa = ipa.replace("r", "ɹ")
+            print(ipa)
+
     else:
         print("Word not find")
         
