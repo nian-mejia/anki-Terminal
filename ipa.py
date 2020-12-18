@@ -31,7 +31,18 @@ def wiktionary():
 
 
 def lexico():
-    pass
+    word = str(input("Ingresa una palabra: ")).lower()
+    URL = ("https://www.lexico.com/definition/" + word)
+    response = requests.get(URL)
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    titles = soup.select("span.phoneticsspelling")
+
+    if titles:
+        ipa = titles[1].text
+        print(ipa)
+    else:
+        print("Word not find")
 
 
 if __name__ == "__main__":
