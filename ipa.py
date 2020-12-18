@@ -1,6 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 
+def audio(ipa):
+    ipa = ipa.replace("/", "")
+    URL = ("http://ipa-reader.xyz/?text="+ ipa +"&voice=Joey")
+    print(URL)
+    response = requests.get(URL)
+    print(response.status_code)
+
 def run():
     pagina = int(input("""
 Wiktionary [1]
@@ -74,6 +81,8 @@ def lexico():
             pass
     else:
         print("Word not find")
+        
+    audio(ipa)
     run()
 
 
