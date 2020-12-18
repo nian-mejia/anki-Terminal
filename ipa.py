@@ -19,6 +19,9 @@ def wiktionary():
                     continue
                 else:
                     type_ipa.append(title.text)
+        
+        if not type_ipa:
+            type_ipa.append("IPA")
 
         ipas_list = soup.select("span.IPA")
 
