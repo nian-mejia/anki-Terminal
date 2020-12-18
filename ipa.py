@@ -1,6 +1,26 @@
 import requests
 from bs4 import BeautifulSoup
 
+def run():
+    pagina = int(input("""
+Wiktionary [1]
+Lexico [2]
+Salir[3]
+   """))
+
+    if pagina == 1:
+        print("Wiktionary")
+        wiktionary()
+    elif pagina == 2:
+        print("Lexico")
+        lexico()
+    elif pagina == 3:
+        print("Salir")
+        exit()
+    else:
+        print("Ingresa una opción correcta")
+
+
 
 def wiktionary():
     word = str(input("Ingresa una palabra: ")).lower()
@@ -30,6 +50,7 @@ def wiktionary():
         print(dic)
     else:
         print("Word not find")
+    run()
 
 
 
@@ -46,19 +67,8 @@ def lexico():
         print(ipa)
     else:
         print("Word not find")
+    run()
 
 
 if __name__ == "__main__":
-    pagina = int(input("""
-   Wiktionary [1]
-   Lexico [2]
-   """))
-
-    if pagina == 1:
-        print("Wiktionary")
-        wiktionary()
-    elif pagina == 2:
-        print("Lexico")
-        lexico()
-    else:
-        print("Ingresa una opción correcta")
+    run()
