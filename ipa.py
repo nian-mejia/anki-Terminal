@@ -65,6 +65,11 @@ def lexico():
     if titles:
         ipa = titles[1].text
         print(ipa)
+        try:
+            ipa2 = titles[3].text
+            print(ipa2)
+        except:
+            pass
     else:
         print("Word not find")
     run()
