@@ -10,10 +10,11 @@ def audio(ipa):
 
 def run():
     pagina = int(input("""
-Wiktionary [1]
-Lexico [2]
-Salir[3]
-   """))
+    Wiktionary [1]
+    Lexico [2]
+    Salir[3]
+    
+    Ingresa un número: """))
 
     if pagina == 1:
         print("Wiktionary")
