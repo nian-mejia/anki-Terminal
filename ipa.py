@@ -1,32 +1,31 @@
 import requests
 from bs4 import BeautifulSoup
-
-def audio(ipa):
-    ipa = ipa.replace("/", "")
-    URL = ("http://ipa-reader.xyz/?text="+ ipa +"&voice=Joey")
-    print(URL)
-    response = requests.get(URL)
-    print(response.status_code)
+import eng_to_ipa as ipa
 
 def run():
-    pagina = int(input("""
-    Wiktionary [1]
-    Lexico [2]
-    Salir[3]
+    pagina = str(input("""
+    IPA_Wiktionary [1]
+    IPA_Lexico [2]
+    IPA_CMU[3]
+    Salir[4]
     
     Ingresa un número: """))
 
-    if pagina == 1:
+    if pagina == "1":
         print("Wiktionary")
         wiktionary()
-    elif pagina == 2:
+    elif pagina == "2":
         print("Lexico")
         lexico()
-    elif pagina == 3:
+    elif pagina == "3":
+        print("CMU")
+        ipa_cmu()
+    elif pagina == "4":
         print("Salir")
         exit()
     else:
         print("Ingresa una opción correcta")
+        run()
 
 
 
@@ -88,8 +87,14 @@ def lexico():
 
     else:
         print("Word not find")
+    run()
+
+def ipa_cmu():
+    word = str(input("Ingresa una palabra: ")).lower()
+    ipacmu = ipa.ipa_list(word)
+    for i in ipacmu[0]:
+        print("/"+i+"/")
         
-    audio(ipa)
     run()
 
 
