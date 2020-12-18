@@ -32,11 +32,11 @@ def wiktionary():
 
 def lexico():
     word = str(input("Ingresa una palabra: ")).lower()
-    URL = ("https://www.lexico.com/definition/" + word)
+    URL = ("https://www.lexico.com/en/definition/" + word)
     response = requests.get(URL)
 
     soup = BeautifulSoup(response.text, "html.parser")
-    titles = soup.select("span.phoneticsspelling")
+    titles = soup.select("span.phoneticspelling")
 
     if titles:
         ipa = titles[1].text
