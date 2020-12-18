@@ -64,9 +64,11 @@ def lexico():
 
     if titles:
         ipa = titles[1].text
+        ipa = ipa.replace("r", "ɹ")
         print(ipa)
         try:
             ipa2 = titles[3].text
+            ipa2 = ipa2.replace("r", "ɹ")
             print(ipa2)
         except:
             pass
