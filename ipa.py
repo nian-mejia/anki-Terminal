@@ -93,6 +93,7 @@ def ipa_cmu():
     word = str(input("Ingresa una palabra: ")).lower()
     ipacmu = ipa.ipa_list(word)
     for i in ipacmu[0]:
+        i = i.replace("r", "ɹ")
         print("/"+i+"/")
         
     run()
