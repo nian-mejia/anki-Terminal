@@ -10,31 +10,13 @@ Salir[4]
     
 Ingresa un número: """
 
-
-def run():
-    pagina = str(input(choise))
-
-    if pagina == "1":
-        print("Wiktionary")
-        wiktionary()
-    elif pagina == "2":
-        print("Lexico")
-        lexico()
-    elif pagina == "3":
-        print("CMU")
-        ipa_cmu()
-    elif pagina == "4":
-        print("Salir")
-        exit()
-    else:
-        print("Ingresa una opción correcta")
-        run()
-
-
 def ipa_requests(url, selector):
     global word
-    word = str(input("Ingresa una palabra: ")).lower()
+    if selector != "span.IPA":
+        word = str(input("Ingresa una palabra: ")).lower()
+    
     url += word
+
     response = requests.get(url)
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -53,23 +35,21 @@ def wiktionary():
         type_ipa = []
 
         for title in titles:
-            if title.a:
-                if word in title.text:
-                    continue
-                else:
-                    type_ipa.append(title.text)
+            if title.a and not word in title.text:
+                type_ipa.append(title.text)
 
         if not type_ipa:
             type_ipa.append("IPA")
 
+        
         ipas_list = ipa_requests(url, "span.IPA")
-
         ipas = [ipa.text for ipa in ipas_list]
         dic = dict(zip(type_ipa, ipas))
         print(dic)
 
     else:
         print("Word not find")
+    
     run()
 
 
@@ -122,6 +102,25 @@ def ipa_cmu():
         print("Error")
 
     run()
+
+def run():
+    pagina = str(input(choise))
+
+    if pagina == "1":
+        print("Wiktionary")
+        wiktionary()
+    elif pagina == "2":
+        print("Lexico")
+        lexico()
+    elif pagina == "3":
+        print("CMU")
+        ipa_cmu()
+    elif pagina == "4":
+        print("Salir")
+        exit()
+    else:
+        print("Ingresa una opción correcta")
+        run()
 
 
 if __name__ == "__main__":
