@@ -5,8 +5,8 @@ import eng_to_ipa as engipa
 choise = """
 IPA_Wiktionary [1]
 IPA_Lexico [2]
-IPA_CMU[3]
-Salir[4]
+IPA_CMU [3]
+Salir [4]
     
 Ingresa un número: """
 
