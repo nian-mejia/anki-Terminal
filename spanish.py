@@ -43,6 +43,7 @@ def run():
     elif pagina == "3":
         print("Atras")
         main.inicio()
+        
     else:
         print("Ingresa una opción correcta")
         run()
