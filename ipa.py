@@ -24,6 +24,14 @@ def ipa_requests(url, selector):
 
     return titles
 
+def cleaner(ipa):
+    ipa = ipa.replace("r", "ɹ")
+
+    if "/" not in ipa:
+        ipa = "/"+ipa+"/"
+    
+    print(ipa)
+    return ipa
 
 def wiktionary():
     url = "https://en.wiktionary.org/wiki/"
@@ -60,19 +68,19 @@ def lexico():
 
     if titles:
         ipa = titles[1].text
-        ipa = ipa.replace("r", "ɹ")
-        print(ipa)
+
         try:
             ipa2 = titles[3].text
-            ipa2 = ipa2.replace("r", "ɹ")
             if ipa != ipa2:
-                print(ipa2)
+                ipa = cleaner(ipa)
+                ipa2 = cleaner(ipa2)
+        
         except:
-            pass
+            ipa = cleaner(ipa)
+            
         if not ipa:
             ipa = titles[0].text
-            ipa = ipa.replace("r", "ɹ")
-            print(ipa)
+            ipa = cleaner(ipa)
 
     else:
         print("Word not find")
@@ -83,13 +91,11 @@ def ipa_cmu():
     def palabra(word):
         palabra = engipa.ipa_list(word)
         for i in palabra[0]:
-            i = i.replace("r", "ɹ")
-            print("/"+i+"/")
+            i = cleaner(i)
 
     def frase(word):
         oracion = engipa.convert(word)
-        oracion = oracion.replace("r", "ɹ")
-        print("/"+oracion+"/")
+        oracion = cleaner(oracion)
 
     word = str(input("Ingresa una palabra: ")).lower()
     word_list = word.split()
