@@ -1,6 +1,5 @@
 import main
 from deep_translator import LingueeTranslator
-from deep_translator import DeepL
 from deep_translator import GoogleTranslator
 
 choise = """
@@ -14,8 +13,7 @@ def solicitud():
     word = str(input("Ingresa una palabra: ")).lower()
     if not word:
         solicitud()
-    else:
-        return word     
+    return word     
 
 def linguee():
     word = solicitud()
