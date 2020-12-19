@@ -3,10 +3,10 @@ from bs4 import BeautifulSoup
 import eng_to_ipa as engipa
 
 choise = """
-IPA_Wiktionary [1]
-IPA_Lexico [2]
-IPA_CMU [3]
-Salir [4]
+[1] IPA_Wiktionary
+[2] IPA_Lexico
+[3] IPA_CMU
+[4] Salir
     
 Ingresa un número: """
 
