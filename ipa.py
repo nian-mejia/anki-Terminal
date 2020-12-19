@@ -12,6 +12,7 @@ Ingresa un número: """
 
 def ipa_requests(url, selector):
     global word
+    
     if selector != "span.IPA":
         word = str(input("Ingresa una palabra: ")).lower()
     
@@ -26,11 +27,11 @@ def ipa_requests(url, selector):
 
 def cleaner(ipa):
     ipa = ipa.replace("r", "ɹ")
-
-    if "/" not in ipa:
+    if not ipa:
+        return ipa
+    elif "/" not in ipa:
         ipa = "/"+ipa+"/"
     
-    print(ipa)
     return ipa
 
 def wiktionary():
@@ -68,21 +69,25 @@ def lexico():
 
     if titles:
         ipa = titles[1].text
+        ipa = cleaner(ipa)
+        print(ipa)
 
         try:
             ipa2 = titles[3].text
+            ipa2 = cleaner(ipa2)
             if ipa != ipa2:
-                ipa = cleaner(ipa)
-                ipa2 = cleaner(ipa2)
-        
+                print(ipa2)
+
         except:
-            ipa = cleaner(ipa)
+            pass
             
         if not ipa:
             ipa = titles[0].text
             ipa = cleaner(ipa)
+            print(ipa)
 
-    else:
+
+    else:       
         print("Word not find")
     run()
 
@@ -92,10 +97,12 @@ def ipa_cmu():
         palabra = engipa.ipa_list(word)
         for i in palabra[0]:
             i = cleaner(i)
+            print(i)
 
     def frase(word):
         oracion = engipa.convert(word)
         oracion = cleaner(oracion)
+        print(oracion)
 
     word = str(input("Ingresa una palabra: ")).lower()
     word_list = word.split()
