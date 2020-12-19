@@ -1,12 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 import eng_to_ipa as engipa
+import main
 
 choise = """
 [1] IPA_Wiktionary
 [2] IPA_Lexico
 [3] IPA_CMU
-[4] Salir
+[4] Atras
     
 Ingresa un número: """
 
@@ -129,8 +130,8 @@ def run():
         print("CMU")
         ipa_cmu()
     elif pagina == "4":
-        print("Salir")
-        exit()
+        print("Atras")
+        main.inicio()
     else:
         print("Ingresa una opción correcta")
         run()
