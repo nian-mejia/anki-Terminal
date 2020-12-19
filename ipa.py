@@ -100,18 +100,27 @@ def lexico():
 
 
 def ipa_cmu():
-    word = str(input("Ingresa una palabra: ")).lower()
-    ipacmu = engipa.ipa_list(word)
+    def palabra(word):
+        palabra = engipa.ipa_list(word)
+        for i in palabra[0]:
+            i = i.replace("r", "ɹ")
+            print("/"+i+"/")
 
+    def frase(word):
+        oracion = engipa.convert(word)
+        oracion = oracion.replace("r", "ɹ")
+        print("/"+oracion+"/")
+
+    word = str(input("Ingresa una palabra: ")).lower()
     word_list = word.split()
 
-    for ipa in ipacmu:
-        for i in range(len(ipa)):
-            ipa[i] = ipa[i].replace("r", "ɹ")
-            ipa[i] = "/"+ipa[i]+"/"
+    if len(word_list) == 1:
+        palabra(word)
+    elif len(word_list) >= 2:
+        frase(word)
+    else:
+        print("Error")
 
-    ipa_dict = dict(zip(word_list, ipacmu))
-    print(ipa_dict)
     run()
 
 
