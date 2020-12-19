@@ -10,6 +10,7 @@ Salir[4]
     
 Ingresa un número: """
 
+
 def run():
     pagina = str(input(choise))
 
@@ -29,6 +30,7 @@ def run():
         print("Ingresa una opción correcta")
         run()
 
+
 def ipa_requests(url, selector):
     global word
     word = str(input("Ingresa una palabra: ")).lower()
@@ -42,10 +44,10 @@ def ipa_requests(url, selector):
 
 
 def wiktionary():
-    url      =  "https://en.wiktionary.org/wiki/"
-    selector =  "span.ib-content.qualifier-content"  
+    url = "https://en.wiktionary.org/wiki/"
+    selector = "span.ib-content.qualifier-content"
 
-    titles   =  ipa_requests(url, selector)
+    titles = ipa_requests(url, selector)
 
     if titles:
         type_ipa = []
@@ -56,26 +58,25 @@ def wiktionary():
                     continue
                 else:
                     type_ipa.append(title.text)
-        
+
         if not type_ipa:
             type_ipa.append("IPA")
 
-        ipas_list = ipa_requests(url,"span.IPA")
+        ipas_list = ipa_requests(url, "span.IPA")
 
         ipas = [ipa.text for ipa in ipas_list]
         dic = dict(zip(type_ipa, ipas))
         print(dic)
-    
+
     else:
         print("Word not find")
     run()
 
 
-
 def lexico():
-    url      = "https://www.lexico.com/en/definition/"
+    url = "https://www.lexico.com/en/definition/"
     selector = "span.phoneticspelling"
-    titles   = ipa_requests(url, selector)
+    titles = ipa_requests(url, selector)
 
     if titles:
         ipa = titles[1].text
@@ -97,12 +98,13 @@ def lexico():
         print("Word not find")
     run()
 
+
 def ipa_cmu():
     word = str(input("Ingresa una palabra: ")).lower()
     ipacmu = engipa.ipa_list(word)
- 
-    word_list   = word.split() 
-    
+
+    word_list = word.split()
+
     for ipa in ipacmu:
         for i in range(len(ipa)):
             ipa[i] = ipa[i].replace("r", "ɹ")
