@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import eng_to_ipa as ipa
+import eng_to_ipa as engipa
 
 choise = """
 IPA_Wiktionary [1]
@@ -99,11 +99,17 @@ def lexico():
 
 def ipa_cmu():
     word = str(input("Ingresa una palabra: ")).lower()
-    ipacmu = ipa.ipa_list(word)
-    for i in ipacmu[0]:
-        i = i.replace("r", "ɹ")
-        print("/"+i+"/")
-        
+    ipacmu = engipa.ipa_list(word)
+ 
+    word_list   = word.split() 
+    
+    for ipa in ipacmu:
+        for i in range(len(ipa)):
+            ipa[i] = ipa[i].replace("r", "ɹ")
+            ipa[i] = "/"+ipa[i]+"/"
+
+    ipa_dict = dict(zip(word_list, ipacmu))
+    print(ipa_dict)
     run()
 
 
