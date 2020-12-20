@@ -1,10 +1,10 @@
 import ipa
-import spanish
+import translator
 #help(ipa)
 
 choise = """
 [1] IPA
-[2] Español
+[2] Traductor
 [3] Definición
 [4] Audio
 [5] Todo
@@ -20,8 +20,8 @@ def inicio():
         ipa.run()
 
     elif pagina == "2":
-        print("Español")
-        spanish.run()
+        print("Traductor")
+        translator.run()
 
     elif pagina == "3":
         print("Definición")

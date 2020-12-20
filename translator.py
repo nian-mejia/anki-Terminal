@@ -1,4 +1,6 @@
 import main
+import detectlanguage
+detectlanguage.configuration.api_key = "5bda2890ba329876bc8dd36f5af61d77"
 from deep_translator import LingueeTranslator
 from deep_translator import GoogleTranslator
 
@@ -13,19 +15,30 @@ def solicitud():
     word = str(input("Ingresa una palabra: ")).lower()
     if not word:
         solicitud()
-    return word     
+    language = detectlanguage.simple_detect(word)
+    return word, language
 
 def linguee():
-    word = solicitud()
-    translated = LingueeTranslator(source='en', target='es').translate(word, return_all=True)
+    word,  language = solicitud()
+    
+    if language == "en":
+        translated = LingueeTranslator(source='en', target='es').translate(word, return_all=True)
+    else:
+        translated = LingueeTranslator(source='es', target='en').translate(word, return_all=True)
     print("")
     for i in translated:
         print(i.capitalize())
+    
     run()
 
 def googletrans():
-    word = solicitud()
-    translated = GoogleTranslator(source='en', target='es').translate(text=word)
+    word,  language = solicitud()
+
+    if language == "en":
+        translated = GoogleTranslator(source='en', target='es').translate(text=word)
+    else:
+        translated = GoogleTranslator(source='es', target='en').translate(text=word)
+    
     print(translated.capitalize())
     run()
 
