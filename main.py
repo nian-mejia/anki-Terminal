@@ -1,5 +1,6 @@
 import ipa
 import translator
+import polly
 #help(ipa)
 
 choise = """
@@ -29,7 +30,7 @@ def inicio():
 
     elif pagina == "4":
         print("Audio")
-        inicio()
+        polly.run()
     
     elif pagina == "5":
         print("Todo")

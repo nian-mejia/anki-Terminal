@@ -1,0 +1,5 @@
+# aws_key.yaml file
+
+access_key_id: <tu key>
+secret_access_key: <tu secret key>
+buckets: <tu buckets>
