@@ -7,7 +7,7 @@ choise = """
 [1] IPA_Wiktionary
 [2] IPA_Lexico
 [3] IPA_CMU
-[4] Atras
+[9] Atras
     
 Ingresa un número: """
 
@@ -129,7 +129,7 @@ def run():
     elif pagina == "3":
         print("CMU")
         ipa_cmu()
-    elif pagina == "4":
+    elif pagina == "9":
         print("Atras")
         main.inicio()
     else:
