@@ -1,6 +1,5 @@
 import ipa
 import translator
-#help(ipa)
 
 choise = """
 [1] IPA
