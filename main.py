@@ -1,7 +1,7 @@
 import ipa
 import translator
 import polly
-#help(ipa)
+
 
 choise = """
 [1] IPA

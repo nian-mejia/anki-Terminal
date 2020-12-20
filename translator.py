@@ -28,11 +28,11 @@ def linguee_en_es():
     
     run()
 
+    print("")
 def linguee_es_en():
     word = solicitud()
     
     translated = LingueeTranslator(source='es', target='en').translate(word, return_all=True)
-    print("")
 
     for i in translated:
         print(i.capitalize())
