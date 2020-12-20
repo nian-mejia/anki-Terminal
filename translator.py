@@ -4,8 +4,8 @@ from deep_translator import GoogleTranslator
 
 choise = """
 [1] Linguee EN - ES
-[2] Google Trasnslator EN - ES
-[3] Linguee ES - EN
+[2] Linguee ES - EN
+[3] Google Trasnlator EN - ES
 [4] Google Translator ES - EN
 [9] Atras
 
@@ -61,14 +61,14 @@ def run():
     if pagina == "1":
         print("Linguee EN - ES")
         linguee_en_es()
-
+    
     elif pagina == "2":
-        print("Google Trasnslator EN - ES")
-        googletrans_en_es()
-
-    elif pagina == "3":
         print("Linguee ES - EN")
         linguee_es_en()
+
+    elif pagina == "3":
+        print("Google Trasnslator EN - ES")
+        googletrans_en_es()
 
     elif pagina == "4":
         print("Google Trasnslator ES - EN")
