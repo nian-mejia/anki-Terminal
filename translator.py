@@ -1,6 +1,6 @@
 import main
 import detectlanguage
-detectlanguage.configuration.api_key = "5bda2890ba329876bc8dd36f5af61d77"
+detectlanguage.configuration.api_key = "f6b43c00c112e5c0c39bd1b207da2b29"
 from deep_translator import LingueeTranslator
 from deep_translator import GoogleTranslator
 
