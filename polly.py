@@ -6,6 +6,7 @@ from boto3.session import Session
 
 with open(r'aws_key.yaml') as file_aws:
     lista_aws = yaml.full_load(file_aws)
+    file_aws.close()
 
 choise = """
 [1] Crear audio
@@ -18,10 +19,16 @@ Ingresa un número: """
 
 
 def status():
-    task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
-    print(task_status["SynthesisTask"]["TaskStatus"])
+    try:
+        task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
+        s = task_status["SynthesisTask"]["TaskStatus"]
+        statu = {'scheduled':"en peticion",'inProgress': "en proceso",'completed': "generado",'failed': "fallido"}
+        print("Audio " + statu[s])
+        run()
+    except:
+        print("\nPrimero crea un audio")
+        polly_tarea()
     run()
-
 
 def list_sound():
     session = Session(aws_access_key_id=lista_aws["access_key_id"],
@@ -30,16 +37,28 @@ def list_sound():
 
     s3 = session.resource('s3')
     my_bucket = s3.Bucket(lista_aws["buckets"])
+
+    lista = []
+
     for s3_files in my_bucket.objects.all():
         print(s3_files.key)
+        lista.append(s3_files.key)
 
-    file = str(input("Nombre del archivo: "))
-    if file == "":
-        run()
+    if lista:
+        download = str(input("Descargar un archivo y/n: ")).lower()
+        if download == "y":
+            file = str(input("Nombre del archivo: "))
+            try:
+                my_bucket.download_file(file, "{}{}.mp3".format(
+                lista_aws["root"], file.replace(" ", "_")))
+                print("Descarga completada")
+            except:
+                print("Este archivo no se encontró")
+
+        else:
+            run()
     else:
-        my_bucket.download_file(file, "{}{}.mp3".format(
-            lista_aws["root"], file.replace(" ", "_")))
-        print("Descarga completada")
+        print("\nLista vacia. Intenta nuevamente")
 
     run()
 
@@ -83,8 +102,6 @@ def descargar():
     my_bucket.download_file(file, "{}{}.mp3".format(
         lista_aws["root"], word.replace(" ", "_")))
     print("Descarga completada")
-
-    #print("Espera un momento...")
 
     run()
 
