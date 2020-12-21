@@ -9,15 +9,32 @@ with open(r'aws_key.yaml') as file_aws:
 
 choise = """
 [1] Crear audio
-[2] Descargar audio
+[2] Estado
+[3] Descargar audio
+[4] Listar
 [9] Atras
     
 Ingresa un número: """
 
+def status():
+    task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
+    print(task_status["SynthesisTask"]["TaskStatus"])
+    run()
+
+def list_sound():
+    session = Session(aws_access_key_id=lista_aws["access_key_id"],
+                      aws_secret_access_key=lista_aws["secret_access_key"],
+                      region_name='us-east-1')
+
+    s3 = session.resource('s3')
+    my_bucket = s3.Bucket(lista_aws["buckets"])
+    for s3_files in my_bucket.objects.all():
+        print(s3_files.key)
+
 
 def polly_tarea():
     word = solicitud()
-
+    global polly_client
     polly_client = boto3.Session(
         aws_access_key_id=lista_aws["access_key_id"],
         aws_secret_access_key=lista_aws["secret_access_key"],
@@ -36,8 +53,7 @@ def polly_tarea():
     taskId = response['SynthesisTask']['TaskId']
 
     print("Task id is {} ".format(taskId))
-    #task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
-    # print(task_status)
+    status()
     run()
 
 
@@ -50,8 +66,6 @@ def descargar():
     s3 = session.resource('s3')
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
-    # for s3_files in my_bucket.objects.all():
-    #    print(s3_files.key)
 
     print("Descargando elemento...")
 
@@ -80,8 +94,16 @@ def run():
         polly_tarea()
 
     elif pagina == "2":
+        print("Estado")
+        status()
+    
+    elif pagina == "3":
         print("Descargar audio")
         descargar()
+
+    elif pagina == "4":
+        print("Listar audios")
+        list_sound()
 
     elif pagina == "9":
         print("Atras")
