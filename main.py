@@ -1,10 +1,7 @@
 import ipa
 import translator
-<<<<<<< HEAD
 import polly
 
-=======
->>>>>>> nicoll
 
 choise = """
 [1] IPA
