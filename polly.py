@@ -20,22 +20,32 @@ Ingresa un número: """
 
 
 def delete_audio():
-    print("Listar audios: \n")
-    list_audios()
-    file = str(input("Ingresa el nombre del archivo a eliminar: "))
-    s3 = sessionS3()
+    lista, my_bucket = list_audios()
+    if lista:
+        eliminar = str(input("Eliminar un archivo y/n: ")).lower()
+        if eliminar == "y":
+            file = str(input("Nombre del archivo: "))
 
-    my_bucket = s3.Bucket(lista_aws["buckets"])
-    my_bucket.delete_objects(Bucket=lista_aws["buckets"],
-        Delete={'Objects': [{'Key': file}]})
+            respuesta = my_bucket.delete_objects(Bucket=lista_aws["buckets"],
+                                                 Delete={'Objects': [{'Key': file}]})
+            if respuesta["Deleted"][0]["DeleteMarker"] == True:
+                print("Solicitud enviada")
+                verificar = str(
+                    input("¿Desea verificar si se eliminó correctamente? y/n: ")).lower()
+                if verificar == "y":
+                    print("Lista de audios:\n")
+                    lista, b = list_audios()
+                    if not lista:
+                        print("Lista vacia. Intenta nuevamente")
+            else:
+                print("Error en la solicitud")
+        else:
+            run()
+    else:
+        print("\nLista vacia. Intenta nuevamente")
 
-    verificar = str(input("¿Desea verificar si se eliminó correctamente? y/n: ")).lower()
-    if verificar == "y":
-        print("Lista de audios:\n")
-        lista, b = list_audios()
-        if not lista:
-            print("Lista vacia. Intenta nuevamente")
     run()
+
 
 def status():
     try:
@@ -51,6 +61,7 @@ def status():
         print("Intenta crear primero el audio")
         polly_tarea()
 
+
 def list_audios():
     s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
@@ -62,6 +73,7 @@ def list_audios():
         lista.append(s3_files.key)
 
     return lista, my_bucket
+
 
 def list_sound():
     lista, my_bucket = list_audios()
