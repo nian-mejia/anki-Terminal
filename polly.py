@@ -20,8 +20,14 @@ Ingresa un número: """
 
 
 def delete_audio():
-    run()
+    #"7ea3c177-71af-4364-9691-6e4732bb378e.mp3"
+    file = str(input("Ingresa el nombre del archivo: "))
+    s3 = sessionS3()
 
+    my_bucket = s3.Bucket(lista_aws["buckets"])
+    my_bucket.delete_objects(Bucket=lista_aws["buckets"],
+        Delete={'Objects': [{'Key': file}], 'Quiet': True})
+    run()
 
 
 def status():
@@ -37,12 +43,10 @@ def status():
     except:
         print("Intenta crear primero el audio")
         polly_tarea()
-        
 
 
 def list_sound():
-    session = seccion()
-    s3 = session.resource('s3')
+    s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
     lista = []
@@ -78,11 +82,12 @@ def cliente():
     return polly_client
 
 
-def seccion():
+def sessionS3():
     session = Session(aws_access_key_id=lista_aws["access_key_id"],
                       aws_secret_access_key=lista_aws["secret_access_key"],
                       region_name='us-east-1')
-    return session
+    s3 = session.resource('s3')
+    return s3
 
 
 def polly_tarea():
@@ -113,18 +118,16 @@ def descargar():
         print("Primero crea una palabra o descarga una ya generada en listar")
         run()
 
-    session = seccion()
+    s3 = sessionS3()
 
-    s3 = session.resource('s3')
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
     print("Descargando elemento...")
 
-    
     my_bucket.download_file(file, "{}{}.mp3".format(
         lista_aws["root"], word.replace(" ", "_")))
     print("Descarga completada")
-    
+
     run()
 
 
