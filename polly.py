@@ -26,15 +26,18 @@ def delete_audio():
 
 def status():
     try:
+        polly_client = cliente()
         task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
         s = task_status["SynthesisTask"]["TaskStatus"]
         statu = {'scheduled': "en peticion", 'inProgress': "en proceso",
                  'completed': "generado", 'failed': "fallido"}
         print("Audio " + statu[s])
+        run()
 
     except:
         print("Intenta crear primero el audio")
-        run()
+        polly_tarea()
+        
 
 
 def list_sound():
