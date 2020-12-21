@@ -1,4 +1,9 @@
 import main
+<<<<<<< HEAD
+=======
+import detectlanguage
+from googletrans import Translator
+>>>>>>> nicoll
 from deep_translator import LingueeTranslator
 from deep_translator import GoogleTranslator
 
@@ -15,6 +20,7 @@ def solicitud():
     word = str(input("Ingresa una palabra: ")).lower()
     if not word:
         solicitud()
+<<<<<<< HEAD
     return word
 
 def linguee_en_es():
@@ -23,11 +29,36 @@ def linguee_en_es():
     translated = LingueeTranslator(source='en', target='es').translate(word, return_all=True)
     print("")
 
+=======
+
+    translator = Translator()
+    language   = translator.detect(word)
+    language   = language.lang
+
+    return word, language
+
+def do_translat(translator):
+    word,language = solicitud()    
+    
+    if language == "en":
+        dest = "es"
+    else:
+        dest = "en"
+    if translator == LingueeTranslator:
+        translated = translator(source=language, target= dest).translate(word, return_all=True)
+    else:
+        translated = translator(source=language, target= dest).translate(word)
+    return translated
+
+def linguee():
+    translated = do_translat(LingueeTranslator)
+>>>>>>> nicoll
     for i in translated:
         print(i.capitalize())
     
     run()
 
+<<<<<<< HEAD
     print("")
 def linguee_es_en():
     word = solicitud()
@@ -52,6 +83,10 @@ def googletrans_es_en():
     
     translated = GoogleTranslator(source='es', target='en').translate(text=word)
         
+=======
+def googletrans():
+    translated = do_translat(GoogleTranslator)
+>>>>>>> nicoll
     print(translated.capitalize())
     run()
 
