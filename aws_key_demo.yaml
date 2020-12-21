@@ -1,0 +1,4 @@
+access_key_id: <your key aws>
+secret_access_key: <your secret key>
+buckets: <your buckets>
+root: <your root download file> 

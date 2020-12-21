@@ -6,7 +6,7 @@ from deep_translator import GoogleTranslator
 choise = """
 [1] Linguee
 [2] Google Trasnslator
-[3] Atras
+[9] Atras
     
 Ingresa un número: """
 
@@ -57,7 +57,7 @@ def run():
         print("Google Trasnslator")
         googletrans()
 
-    elif pagina == "3":
+    elif pagina == "9":
         print("Atras")
         main.inicio()
         
