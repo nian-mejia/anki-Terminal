@@ -9,11 +9,11 @@ with open(r'aws_key.yaml') as file_aws:
     file_aws.close()
 
 choise = """
-[1] Crear audio
-[2] Estado
-[3] Descargar audio
-[4] Listar
-[5] Eliminar audio
+[1] Crear audio nuevo
+[2] Estado audio nuevo
+[3] Descargar audio nuevo
+[4] Descargar audios creados
+[5] Eliminar audio creados
 [9] Atras
     
 Ingresa un número: """
@@ -165,23 +165,23 @@ def run():
     pagina = str(input(choise))
 
     if pagina == "1":
-        print("Crear audio")
+        print("Crear audio nuevo")
         polly_tarea()
 
     elif pagina == "2":
-        print("Estado")
+        print("Estado audio nuevo")
         status()
 
     elif pagina == "3":
-        print("Descargar audio")
+        print("Descargar audio nuevo")
         descargar()
 
     elif pagina == "4":
-        print("Listar audios")
+        print("Descargar audios creados")
         list_sound()
 
     elif pagina == "5":
-        print("Eliminar audios")
+        print("Eliminar audio creados")
         delete_audio()
 
     elif pagina == "9":
