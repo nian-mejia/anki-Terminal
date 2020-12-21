@@ -20,9 +20,22 @@ Ingresa un número: """
 
 
 def delete_audio():
+    print("Listar audios: \n")
+    list_audios()
+    file = str(input("Ingresa el nombre del archivo a eliminar: "))
+    s3 = sessionS3()
+
+    my_bucket = s3.Bucket(lista_aws["buckets"])
+    my_bucket.delete_objects(Bucket=lista_aws["buckets"],
+        Delete={'Objects': [{'Key': file}]})
+
+    verificar = str(input("¿Desea verificar si se eliminó correctamente? y/n: ")).lower()
+    if verificar == "y":
+        print("Lista de audios:\n")
+        lista, b = list_audios()
+        if not lista:
+            print("Lista vacia. Intenta nuevamente")
     run()
-
-
 
 def status():
     try:
@@ -37,12 +50,9 @@ def status():
     except:
         print("Intenta crear primero el audio")
         polly_tarea()
-        
 
-
-def list_sound():
-    session = seccion()
-    s3 = session.resource('s3')
+def list_audios():
+    s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
     lista = []
@@ -51,6 +61,10 @@ def list_sound():
         print(s3_files.key)
         lista.append(s3_files.key)
 
+    return lista, my_bucket
+
+def list_sound():
+    lista, my_bucket = list_audios()
     if lista:
         download = str(input("Descargar un archivo y/n: ")).lower()
         if download == "y":
@@ -78,11 +92,12 @@ def cliente():
     return polly_client
 
 
-def seccion():
+def sessionS3():
     session = Session(aws_access_key_id=lista_aws["access_key_id"],
                       aws_secret_access_key=lista_aws["secret_access_key"],
                       region_name='us-east-1')
-    return session
+    s3 = session.resource('s3')
+    return s3
 
 
 def polly_tarea():
@@ -113,18 +128,16 @@ def descargar():
         print("Primero crea una palabra o descarga una ya generada en listar")
         run()
 
-    session = seccion()
+    s3 = sessionS3()
 
-    s3 = session.resource('s3')
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
     print("Descargando elemento...")
 
-    
     my_bucket.download_file(file, "{}{}.mp3".format(
         lista_aws["root"], word.replace(" ", "_")))
     print("Descarga completada")
-    
+
     run()
 
 
