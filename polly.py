@@ -16,10 +16,12 @@ choise = """
     
 Ingresa un número: """
 
+
 def status():
     task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
     print(task_status["SynthesisTask"]["TaskStatus"])
     run()
+
 
 def list_sound():
     session = Session(aws_access_key_id=lista_aws["access_key_id"],
@@ -30,6 +32,16 @@ def list_sound():
     my_bucket = s3.Bucket(lista_aws["buckets"])
     for s3_files in my_bucket.objects.all():
         print(s3_files.key)
+
+    file = str(input("Nombre del archivo: "))
+    if file == "":
+        run()
+    else:
+        my_bucket.download_file(file, "{}{}.mp3".format(
+            lista_aws["root"], file.replace(" ", "_")))
+        print("Descarga completada")
+
+    run()
 
 
 def polly_tarea():
@@ -66,7 +78,6 @@ def descargar():
     s3 = session.resource('s3')
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
-
     print("Descargando elemento...")
 
     my_bucket.download_file(file, "{}{}.mp3".format(
@@ -96,7 +107,7 @@ def run():
     elif pagina == "2":
         print("Estado")
         status()
-    
+
     elif pagina == "3":
         print("Descargar audio")
         descargar()
