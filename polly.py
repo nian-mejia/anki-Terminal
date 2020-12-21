@@ -6,51 +6,88 @@ from boto3.session import Session
 
 with open(r'aws_key.yaml') as file_aws:
     lista_aws = yaml.full_load(file_aws)
+    file_aws.close()
 
 choise = """
 [1] Crear audio
 [2] Estado
 [3] Descargar audio
 [4] Listar
+[5] Eliminar audio
 [9] Atras
     
 Ingresa un número: """
 
 
-def status():
-    task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
-    print(task_status["SynthesisTask"]["TaskStatus"])
+def delete_audio():
     run()
+
+
+
+def status():
+    try:
+        polly_client = cliente()
+        task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
+        s = task_status["SynthesisTask"]["TaskStatus"]
+        statu = {'scheduled': "en peticion", 'inProgress': "en proceso",
+                 'completed': "generado", 'failed': "fallido"}
+        print("Audio " + statu[s])
+        run()
+
+    except:
+        print("Intenta crear primero el audio")
+        polly_tarea()
+        
 
 
 def list_sound():
-    session = Session(aws_access_key_id=lista_aws["access_key_id"],
-                      aws_secret_access_key=lista_aws["secret_access_key"],
-                      region_name='us-east-1')
-
+    session = seccion()
     s3 = session.resource('s3')
     my_bucket = s3.Bucket(lista_aws["buckets"])
+
+    lista = []
+
     for s3_files in my_bucket.objects.all():
         print(s3_files.key)
+        lista.append(s3_files.key)
 
-    file = str(input("Nombre del archivo: "))
-    if file == "":
-        run()
+    if lista:
+        download = str(input("Descargar un archivo y/n: ")).lower()
+        if download == "y":
+            file = str(input("Nombre del archivo: "))
+            try:
+                my_bucket.download_file(file, "{}{}.mp3".format(
+                    lista_aws["root"], file.replace(" ", "_")))
+                print("Descarga completada")
+            except:
+                print("Este archivo no se encontró")
+
+        else:
+            run()
     else:
-        my_bucket.download_file(file, "{}{}.mp3".format(
-            lista_aws["root"], file.replace(" ", "_")))
-        print("Descarga completada")
+        print("\nLista vacia. Intenta nuevamente")
 
     run()
 
 
-def polly_tarea():
-    word = solicitud()
-    global polly_client
+def cliente():
     polly_client = boto3.Session(
         aws_access_key_id=lista_aws["access_key_id"],
         aws_secret_access_key=lista_aws["secret_access_key"],
         region_name='us-east-1').client("polly")
+    return polly_client
+
+
+def seccion():
+    session = Session(aws_access_key_id=lista_aws["access_key_id"],
+                      aws_secret_access_key=lista_aws["secret_access_key"],
+                      region_name='us-east-1')
+    return session
+
+
+def polly_tarea():
+    word = solicitud()
+    polly_client = cliente()
 
     response = polly_client.start_speech_synthesis_task(
         Engine='neural',
@@ -70,22 +107,24 @@ def polly_tarea():
 
 
 def descargar():
-    file = taskId + ".mp3"
-    session = Session(aws_access_key_id=lista_aws["access_key_id"],
-                      aws_secret_access_key=lista_aws["secret_access_key"],
-                      region_name='us-east-1')
+    try:
+        file = taskId + ".mp3"
+    except:
+        print("Primero crea una palabra o descarga una ya generada en listar")
+        run()
+
+    session = seccion()
 
     s3 = session.resource('s3')
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
     print("Descargando elemento...")
 
+    
     my_bucket.download_file(file, "{}{}.mp3".format(
         lista_aws["root"], word.replace(" ", "_")))
     print("Descarga completada")
-
-    #print("Espera un momento...")
-
+    
     run()
 
 
@@ -115,6 +154,10 @@ def run():
     elif pagina == "4":
         print("Listar audios")
         list_sound()
+
+    elif pagina == "5":
+        print("Eliminar audios")
+        delete_audio()
 
     elif pagina == "9":
         print("Atras")

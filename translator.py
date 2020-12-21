@@ -1,5 +1,4 @@
 import main
-import detectlanguage
 from googletrans import Translator
 from deep_translator import LingueeTranslator
 from deep_translator import GoogleTranslator
