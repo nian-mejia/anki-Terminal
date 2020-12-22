@@ -11,12 +11,13 @@ choise = """
     
 Ingresa un número: """
 
+
 def ipa_requests(url, selector):
     global word
-    
+
     if selector != "span.IPA":
         word = str(input("Ingresa una palabra: ")).lower()
-    
+
     url += word
 
     response = requests.get(url)
@@ -26,14 +27,16 @@ def ipa_requests(url, selector):
 
     return titles
 
+
 def cleaner(ipa):
     ipa = ipa.replace("r", "ɹ")
     if not ipa:
         return ipa
     elif "/" not in ipa:
         ipa = "/"+ipa+"/"
-    
+
     return ipa
+
 
 def wiktionary():
     url = "https://en.wiktionary.org/wiki/"
@@ -51,7 +54,6 @@ def wiktionary():
         if not type_ipa:
             type_ipa.append("IPA")
 
-        
         ipas_list = ipa_requests(url, "span.IPA")
         ipas = [ipa.text for ipa in ipas_list]
         dic = dict(zip(type_ipa, ipas))
@@ -59,7 +61,7 @@ def wiktionary():
 
     else:
         print("Word not find")
-    
+
     run()
 
 
@@ -81,14 +83,13 @@ def lexico():
 
         except:
             pass
-            
+
         if not ipa:
             ipa = titles[0].text
             ipa = cleaner(ipa)
             print(ipa)
 
-
-    else:       
+    else:
         print("Word not find")
     run()
 
@@ -116,6 +117,7 @@ def ipa_cmu():
         print("Error")
 
     run()
+
 
 def run():
     pagina = str(input(choise))

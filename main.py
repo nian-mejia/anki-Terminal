@@ -13,6 +13,7 @@ choise = """
     
 Ingresa un número: """
 
+
 def inicio():
     pagina = str(input(choise))
 
@@ -31,7 +32,7 @@ def inicio():
     elif pagina == "4":
         print("Audio")
         polly.run()
-    
+
     elif pagina == "5":
         print("Todo")
         inicio()
@@ -42,7 +43,6 @@ def inicio():
     else:
         print("Ingresa una opción correcta")
         inicio()
-
 
 
 if __name__ == "__main__":
