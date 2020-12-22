@@ -33,7 +33,10 @@ def solicitud():
 
 
 def do_translat(translator):
-    word, language = solicitud()
+    try:
+        word, language = solicitud()
+    except TypeError:
+        word, language = solicitud()
 
     if language == "en":
         dest = "es"
