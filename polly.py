@@ -9,33 +9,43 @@ with open(r'aws_key.yaml') as file_aws:
     file_aws.close()
 
 choise = """
-[1] Crear audio
-[2] Estado
-[3] Descargar audio
-[4] Listar
-[5] Eliminar audio
+[1] Crear audio nuevo
+[2] Estado audio nuevo
+[3] Descargar audio nuevo
+[4] Descargar audios creados
+[5] Eliminar audio creados
 [9] Atras
     
 Ingresa un número: """
 
 
 def delete_audio():
-    print("Listar audios: \n")
-    list_audios()
-    file = str(input("Ingresa el nombre del archivo a eliminar: "))
-    s3 = sessionS3()
+    lista, my_bucket = list_audios()
+    if lista:
+        eliminar = str(input("Eliminar un archivo y/n: ")).lower()
+        if eliminar == "y":
+            file = str(input("Nombre del archivo: "))
 
-    my_bucket = s3.Bucket(lista_aws["buckets"])
-    my_bucket.delete_objects(Bucket=lista_aws["buckets"],
-        Delete={'Objects': [{'Key': file}]})
+            respuesta = my_bucket.delete_objects(Bucket=lista_aws["buckets"],
+                                                 Delete={'Objects': [{'Key': file}]})
+            if respuesta["Deleted"][0]["DeleteMarker"] == True:
+                print("Solicitud enviada")
+                verificar = str(
+                    input("¿Desea verificar si se eliminó correctamente? y/n: ")).lower()
+                if verificar == "y":
+                    print("Lista de audios:\n")
+                    lista, b = list_audios()
+                    if not lista:
+                        print("Lista vacia. Intenta nuevamente")
+            else:
+                print("Error en la solicitud")
+        else:
+            run()
+    else:
+        print("\nLista vacia. Intenta nuevamente")
 
-    verificar = str(input("¿Desea verificar si se eliminó correctamente? y/n: ")).lower()
-    if verificar == "y":
-        print("Lista de audios:\n")
-        lista, b = list_audios()
-        if not lista:
-            print("Lista vacia. Intenta nuevamente")
     run()
+
 
 def status():
     try:
@@ -51,6 +61,7 @@ def status():
         print("Intenta crear primero el audio")
         polly_tarea()
 
+
 def list_audios():
     s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
@@ -62,6 +73,7 @@ def list_audios():
         lista.append(s3_files.key)
 
     return lista, my_bucket
+
 
 def list_sound():
     lista, my_bucket = list_audios()
@@ -153,23 +165,23 @@ def run():
     pagina = str(input(choise))
 
     if pagina == "1":
-        print("Crear audio")
+        print("Crear audio nuevo")
         polly_tarea()
 
     elif pagina == "2":
-        print("Estado")
+        print("Estado audio nuevo")
         status()
 
     elif pagina == "3":
-        print("Descargar audio")
+        print("Descargar audio nuevo")
         descargar()
 
     elif pagina == "4":
-        print("Listar audios")
+        print("Descargar audios creados")
         list_sound()
 
     elif pagina == "5":
-        print("Eliminar audios")
+        print("Eliminar audio creados")
         delete_audio()
 
     elif pagina == "9":
