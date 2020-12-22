@@ -1,4 +1,5 @@
 import main
+import time
 import boto3
 import time
 import yaml
@@ -10,14 +11,17 @@ with open(r'aws_key.yaml') as file_aws:
 
 choise = """
 [1] Crear audio nuevo
-[2] Estado audio nuevo
-[3] Descargar audio nuevo
-[4] Descargar audios creados
-[5] Eliminar audio creados
+[2] Descargar audio nuevo
+[3] Descargar audios creados
+[4] Eliminar audio creados
 [9] Atras
     
 Ingresa un número: """
 
+def delete(my_bucket, name_file):
+    respuesta = my_bucket.delete_objects(Bucket=lista_aws["buckets"],
+                                        Delete={'Objects': [{'Key': name_file}]})
+    return respuesta
 
 def delete_audio():
     lista, my_bucket = list_audios()
@@ -25,9 +29,7 @@ def delete_audio():
         eliminar = str(input("Eliminar un archivo y/n: ")).lower()
         if eliminar == "y":
             file = str(input("Nombre del archivo: "))
-
-            respuesta = my_bucket.delete_objects(Bucket=lista_aws["buckets"],
-                                                 Delete={'Objects': [{'Key': file}]})
+            respuesta = delete(my_bucket, file)            
             if respuesta["Deleted"][0]["DeleteMarker"] == True:
                 print("Solicitud enviada")
                 verificar = str(
@@ -48,19 +50,39 @@ def delete_audio():
 
 
 def status():
-    try:
-        polly_client = cliente()
-        task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
-        s = task_status["SynthesisTask"]["TaskStatus"]
-        statu = {'scheduled': "en peticion", 'inProgress': "en proceso",
-                 'completed': "generado", 'failed': "fallido"}
-        print("Audio " + statu[s])
-        run()
+    statu = {'scheduled': "en peticion", 'inProgress': "en proceso",
+                    'completed': "generado", 'failed': "fallido"}
 
-    except:
-        print("Intenta crear primero el audio")
-        polly_tarea()
+    generado = statu["completed"]      
+    estado   = statu["scheduled"]   
+    while estado != generado:
+        try:
+            polly_client = cliente()
+            task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
+            s = task_status["SynthesisTask"]["TaskStatus"]
+            estado =  statu[s]
+            print("Espera el audio se está {}, puede tomar unos segundos".format(estado))
+            print("Audio " + estado)
+            time.sleep(5)
 
+        except:
+            print("Intenta crear primero el audio")
+            polly_tarea()
+    
+    if generado:
+        copy(taskId + ".mp3", word.replace(" ", "_") + ".mp3")
+        s3 = sessionS3()
+        my_bucket = s3.Bucket(lista_aws["buckets"])
+        delete(my_bucket, taskId + ".mp3")
+    
+    run()
+
+def copy(old_name, new_name):
+    s3 = sessionS3()
+    my_bucket = s3.Bucket(lista_aws["buckets"])
+    my_bucket.copy({"Bucket" : lista_aws["buckets"], 
+                    'Key' : old_name},
+                     Key = new_name)
 
 def list_audios():
     s3 = sessionS3()
@@ -82,7 +104,7 @@ def list_sound():
         if download == "y":
             file = str(input("Nombre del archivo: "))
             try:
-                my_bucket.download_file(file, "{}{}.mp3".format(
+                my_bucket.download_file(file, "{}{}".format(
                     lista_aws["root"], file.replace(" ", "_")))
                 print("Descarga completada")
             except:
@@ -139,9 +161,8 @@ def descargar():
     except:
         print("Primero crea una palabra o descarga una ya generada en listar")
         run()
-
+    
     s3 = sessionS3()
-
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
     print("Descargando elemento...")
@@ -169,18 +190,14 @@ def run():
         polly_tarea()
 
     elif pagina == "2":
-        print("Estado audio nuevo")
-        status()
-
-    elif pagina == "3":
         print("Descargar audio nuevo")
         descargar()
 
-    elif pagina == "4":
+    elif pagina == "3":
         print("Descargar audios creados")
         list_sound()
 
-    elif pagina == "5":
+    elif pagina == "4":
         print("Eliminar audio creados")
         delete_audio()
 
