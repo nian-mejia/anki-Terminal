@@ -157,7 +157,7 @@ def polly_tarea():
 
 def descargar():
     try:
-        file = taskId + ".mp3"
+        file = word.replace(" ", "_") + ".mp3"
     except:
         print("Primero crea una palabra o descarga una ya generada en listar")
         run()
