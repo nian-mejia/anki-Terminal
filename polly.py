@@ -70,7 +70,8 @@ def status():
             polly_tarea()
     
     if generado:
-        copy(taskId + ".mp3", word.replace(" ", "_") + ".mp3")
+        global word
+        copy(taskId + ".mp3", word)
         s3 = sessionS3()
         my_bucket = s3.Bucket(lista_aws["buckets"])
         delete(my_bucket, taskId + ".mp3")
@@ -135,6 +136,8 @@ def sessionS3():
 
 
 def polly_tarea():
+    global word 
+
     word = solicitud()
     polly_client = cliente()
 
@@ -149,6 +152,8 @@ def polly_tarea():
 
     global taskId
     taskId = response['SynthesisTask']['TaskId']
+    
+    word = word.replace(" ", "_") + ".mp3"
 
     print("Task id is {} ".format(taskId))
     status()
@@ -156,8 +161,9 @@ def polly_tarea():
 
 
 def descargar():
+    global word
     try:
-        file = word.replace(" ", "_") + ".mp3"
+        file = word
     except:
         print("Primero crea una palabra o descarga una ya generada en listar")
         run()
@@ -167,8 +173,8 @@ def descargar():
 
     print("Descargando elemento...")
 
-    my_bucket.download_file(file, "{}{}.mp3".format(
-        lista_aws["root"], word.replace(" ", "_")))
+    my_bucket.download_file(file, "{}{}".format(
+        lista_aws["root"], word))
     print("Descarga completada")
 
     run()
