@@ -37,18 +37,28 @@ def do_translat(translator):
         word, language = solicitud()
     except TypeError:
         word, language = solicitud()
-
     if language == "en":
         dest = "es"
     else:
         dest = "en"
     if translator == LingueeTranslator:
-        translated = translator(source=language, target=dest).translate(
-            word, return_all=True)
-    else:
-        translated = translator(source=language, target=dest).translate(word)
-    return translated
+        try:
+            translated = translator(source=language, target=dest).translate(
+                word, return_all=True)
+            return translated
 
+        except:
+            print("Error")
+            run()
+
+    else:
+        try:
+            translated = translator(source=language, target=dest).translate(word)
+            return translated
+
+        except:
+            print("Error")
+            run()
 
 def linguee():
     translated = do_translat(LingueeTranslator)
