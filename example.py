@@ -17,6 +17,10 @@ def ingles_example():
     url = f'https://www.ingles.com/traductor/{word}'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
+    example = soup.select("._1f2Xuesa")
+    for i in example:
+        print(i.text)
+    run()
 
 
 def run():
