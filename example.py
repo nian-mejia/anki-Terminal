@@ -23,12 +23,11 @@ def ingles_example():
     spanish = soup.select("._3WrcYAGx")
     for en, es in zip(english, spanish):
         print(en.text, "\n", es.text)
+    
     run()
-
 
 def run():
     pagina = str(input(choise))
-
     if pagina == "1":
         print("Buscar ejemplos")
         ingles_example()
@@ -38,9 +37,3 @@ def run():
     else:
         print("Ingresa una opción correcta")
         run()
-<<<<<<< HEAD
-
-if __name__ == "__main__":
-    run()
-=======
->>>>>>> 136b1fa1b2f441119b2364b175d6ae5f66d1dcc8

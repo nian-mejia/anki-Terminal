@@ -1,0 +1,14 @@
+ipa:
+  wikitionary: 0
+  lexico: 0
+  CMU: 1
+translator:
+  googletranslate: 0
+  linguee: 1
+sound: 
+  polly: 1
+example:
+  ingles.com: 1
+
+  
+

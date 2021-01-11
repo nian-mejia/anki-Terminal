@@ -62,7 +62,7 @@ def wiktionary():
     else:
         print("Word not find")
 
-    run()
+
 
 
 def lexico():
@@ -91,7 +91,7 @@ def lexico():
 
     else:
         print("Word not find")
-    run()
+
 
 
 def ipa_cmu():
@@ -116,7 +116,6 @@ def ipa_cmu():
     else:
         print("Error")
 
-    run()
 
 
 def run():
@@ -125,12 +124,15 @@ def run():
     if pagina == "1":
         print("Wiktionary")
         wiktionary()
+        run()
     elif pagina == "2":
         print("Lexico")
         lexico()
+        run()
     elif pagina == "3":
         print("CMU")
         ipa_cmu()
+        run()
     elif pagina == "9":
         print("Atras")
         main.inicio()

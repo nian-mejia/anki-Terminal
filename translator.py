@@ -65,13 +65,13 @@ def linguee():
     for i in translated:
         print(i.capitalize())
 
-    run()
+   
 
 
 def googletrans():
     translated = do_translat(GoogleTranslator)
     print(translated.capitalize())
-    run()
+
 
 
 def run():
@@ -80,10 +80,12 @@ def run():
     if pagina == "1":
         print("Linguee")
         linguee()
+        run()
 
     elif pagina == "2":
         print("Google Trasnslator")
         googletrans()
+        run()
 
     elif pagina == "9":
         print("Atras")
