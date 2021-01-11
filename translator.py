@@ -49,7 +49,6 @@ def do_translat(translator):
 
         except:
             print("Error")
-            run()
 
     else:
         try:
@@ -58,19 +57,20 @@ def do_translat(translator):
 
         except:
             print("Error")
-            run()
 
 def linguee():
     translated = do_translat(LingueeTranslator)
-    for i in translated:
-        print(i.capitalize())
+    if translated:
+        for i in translated:
+            print(i.capitalize())
 
    
 
 
 def googletrans():
     translated = do_translat(GoogleTranslator)
-    print(translated.capitalize())
+    if translated:
+        print(translated.capitalize())
 
 
 
