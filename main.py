@@ -1,16 +1,17 @@
 import ipa
 import translator
 import polly
+import example
 
 
 choise = """
 [1] IPA
 [2] Traductor
-[3] Definición
+[3] Ejemplos
 [4] Audio
 [5] Todo
 [9] Salir
-    
+
 Ingresa un número: """
 
 
@@ -26,8 +27,8 @@ def inicio():
         translator.run()
 
     elif pagina == "3":
-        print("Definición")
-        inicio()
+        print("Ejemplos")
+        example.run()
 
     elif pagina == "4":
         print("Audio")

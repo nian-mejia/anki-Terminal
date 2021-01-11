@@ -8,7 +8,7 @@ choise = """
 [2] IPA_Lexico
 [3] IPA_CMU
 [9] Atras
-    
+
 Ingresa un número: """
 
 
