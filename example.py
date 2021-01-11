@@ -8,18 +8,21 @@ choise = """
 
 Ingresa un número: """
 
+
 def words():
     word = str(input("Ingresa una palabra: ")).lower()
     return word
+
 
 def ingles_example():
     word = words()
     url = f'https://www.ingles.com/traductor/{word}'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    example = soup.select("._1f2Xuesa")
-    for i in example:
-        print(i.text)
+    english = soup.select("._1f2Xuesa")
+    spanish = soup.select("._3WrcYAGx")
+    for en, es in zip(english, spanish):
+        print(en.text, "\n", es.text)
     run()
 
 
@@ -35,6 +38,9 @@ def run():
     else:
         print("Ingresa una opción correcta")
         run()
+<<<<<<< HEAD
 
 if __name__ == "__main__":
     run()
+=======
+>>>>>>> 136b1fa1b2f441119b2364b175d6ae5f66d1dcc8
