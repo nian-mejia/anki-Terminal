@@ -31,3 +31,6 @@ def run():
     else:
         print("Ingresa una opción correcta")
         run()
+
+if __name__ == "__main__":
+    run()
