@@ -23,7 +23,7 @@ def ingles_example():
     spanish = soup.select("._3WrcYAGx")
     for en, es in zip(english, spanish):
         print(en.text, "\n", es.text)
-    
+
     run()
 
 def run():
