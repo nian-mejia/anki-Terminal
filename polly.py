@@ -18,6 +18,8 @@ choise = """
     
 Ingresa un número: """
 
+choise  = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
+
 def delete(my_bucket, name_file):
     respuesta = my_bucket.delete_objects(Bucket=lista_aws["buckets"],
                                         Delete={'Objects': [{'Key': name_file}]})

@@ -1,7 +1,8 @@
 import main
-from googletrans import Translator
+import numpy as np
 from deep_translator import LingueeTranslator
 from deep_translator import GoogleTranslator
+from tabulate import tabulate
 
 choise = """
 [1] Linguee
@@ -10,69 +11,48 @@ choise = """
     
 Ingresa un número: """
 
-
-def solicitud():
-    word = str(input("Ingresa una palabra: ")).lower()
-    if not word:
-        solicitud()
-
-    translator = Translator()
-    language = translator.detect(word)
-    language = language.lang
-
-    if type(language) == list:
-        if language[0] == "en" or language[0] == "es":
-            return word, language[0]
-        else:
-            solicitud()
-    else:
-        if language == "en" or language == "es":
-            return word, language
-        else:
-            solicitud()
-
+choise  = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
 
 def do_translat(translator):
-    try:
-        word, language = solicitud()
-    except TypeError:
-        word, language = solicitud()
-    if language == "en":
-        dest = "es"
-    else:
-        dest = "en"
+    word = str(input("Ingresa una palabra: ")).lower()
+    if not word:
+        do_translat()
+
     if translator == LingueeTranslator:
         try:
-            translated = translator(source=language, target=dest).translate(
+            translated = translator(source="en", target="es").translate(
                 word, return_all=True)
             return translated
-
         except:
             print("Error")
 
     else:
         try:
-            translated = translator(source=language, target=dest).translate(word)
+            translated = translator(source="en", target="es").translate(word)
             return translated
-
         except:
             print("Error")
 
 def linguee():
-    translated = do_translat(LingueeTranslator)
-    if translated:
-        for i in translated:
-            print(i.capitalize())
 
-   
+    translate = do_translat(LingueeTranslator)
+    if translate:
+        l = len(translate) / 2 
+        if l == int(l):
+            a = np.array(translate).reshape(int(l), 2)
+        else:
+            translate.append(" ")
+            l = len(translate) / 2 
+            a = np.array(translate).reshape(int(l), 2)
+        
+        print(tabulate(a))
 
+            
 
 def googletrans():
     translated = do_translat(GoogleTranslator)
     if translated:
         print(translated.capitalize())
-
-
 
 def run():
     pagina = str(input(choise))

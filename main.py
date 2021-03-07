@@ -2,7 +2,6 @@ import ipa
 import translator
 import polly
 import example
-import all_script
 
 
 choise = """
@@ -11,10 +10,11 @@ choise = """
 [3] Ejemplos
 [4] Audio
 [5] Todo
-[6] Ver configuración
 [9] Salir
 
 Ingresa un número: """
+
+choise = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
 
 def inicio():
     pagina = str(input(choise))
@@ -38,12 +38,6 @@ def inicio():
     elif pagina == "5":
         print("Todo")
         all_script.run()
-
-    elif pagina == "6":
-        print("Ver configuración")
-        config = all_script.config_def()
-        print(config)
-
 
     elif pagina == "9":
         print("Salir")

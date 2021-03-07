@@ -4,27 +4,20 @@ import eng_to_ipa as engipa
 import main
 
 choise = """
-[1] IPA_Wiktionary
-[2] IPA_Lexico
-[3] IPA_CMU
+[1] IPA_Lexico
+[2] IPA_CMU
 [9] Atras
 
 Ingresa un número: """
 
+choise = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
 
 def ipa_requests(url, selector):
-    global word
-
-    if selector != "span.IPA":
-        word = str(input("Ingresa una palabra: ")).lower()
-
+    word = str(input("Ingresa una palabra: ")).lower()
     url += word
-
     response = requests.get(url)
-
     soup = BeautifulSoup(response.text, "html.parser")
     titles = soup.select(selector)
-
     return titles
 
 
@@ -36,34 +29,6 @@ def cleaner(ipa):
         ipa = "/"+ipa+"/"
 
     return ipa
-
-
-def wiktionary():
-    url = "https://en.wiktionary.org/wiki/"
-    selector = "span.ib-content.qualifier-content"
-
-    titles = ipa_requests(url, selector)
-
-    if titles:
-        type_ipa = []
-
-        for title in titles:
-            if title.a and not word in title.text:
-                type_ipa.append(title.text)
-
-        if not type_ipa:
-            type_ipa.append("IPA")
-
-        ipas_list = ipa_requests(url, "span.IPA")
-        ipas = [ipa.text for ipa in ipas_list]
-        dic = dict(zip(type_ipa, ipas))
-        print(dic)
-
-    else:
-        print("Word not find")
-
-
-
 
 def lexico():
     url = "https://www.lexico.com/en/definition/"
@@ -122,14 +87,10 @@ def run():
     pagina = str(input(choise))
 
     if pagina == "1":
-        print("Wiktionary")
-        wiktionary()
-        run()
-    elif pagina == "2":
         print("Lexico")
         lexico()
         run()
-    elif pagina == "3":
+    elif pagina == "2":
         print("CMU")
         ipa_cmu()
         run()

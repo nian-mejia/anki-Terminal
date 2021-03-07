@@ -8,6 +8,8 @@ choise = """
 
 Ingresa un número: """
 
+choise  = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
+
 
 def words():
     word = str(input("Ingresa una palabra: ")).lower()
