@@ -16,6 +16,10 @@ Ingresa un número: """
 
 choise = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
 
+def all():
+    word = str(input("Ingresa una palabra: ")).lower()
+    ipa.ipa_cmu(word)
+
 def inicio():
     pagina = str(input(choise))
 
@@ -37,7 +41,7 @@ def inicio():
 
     elif pagina == "5":
         print("Todo")
-        all_script.run()
+        all()
 
     elif pagina == "9":
         print("Salir")

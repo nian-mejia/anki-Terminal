@@ -28,7 +28,7 @@ def cleaner(ipa):
     elif "/" not in ipa:
         ipa = "/"+ipa+"/"
 
-    return ipa
+    return "\033[1;32m"+ipa
 
 def lexico():
     url = "https://www.lexico.com/en/definition/"
@@ -59,7 +59,7 @@ def lexico():
 
 
 
-def ipa_cmu():
+def ipa_cmu(word = None):
     def palabra(word):
         palabra = engipa.ipa_list(word)
         for i in palabra[0]:
@@ -71,11 +71,14 @@ def ipa_cmu():
         oracion = cleaner(oracion)
         print(oracion)
 
-    word = str(input("Ingresa una palabra: ")).lower()
+    if not word:
+        word = str(input("Ingresa una palabra: ")).lower()
+    
     word_list = word.split()
 
     if len(word_list) == 1:
         palabra(word)
+
     elif len(word_list) >= 2:
         frase(word)
     else:

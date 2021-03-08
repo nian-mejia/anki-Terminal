@@ -45,14 +45,14 @@ def linguee():
             l = len(translate) / 2 
             a = np.array(translate).reshape(int(l), 2)
         
-        print(tabulate(a))
+        print("\033[1;32m", tabulate(a))
 
             
 
 def googletrans():
     translated = do_translat(GoogleTranslator)
     if translated:
-        print(translated.capitalize())
+        print("\033[1;32m", translated.capitalize())
 
 def run():
     pagina = str(input(choise))

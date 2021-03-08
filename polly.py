@@ -28,31 +28,31 @@ def delete(my_bucket, name_file):
 def delete_audio():
     lista, my_bucket = list_audios()
     if lista:
-        eliminar = str(input("Eliminar un archivo y/n: ")).lower()
+        eliminar = str(input("\033[0;37mEliminar un archivo y/n: \033[1;32m")).lower()
         if eliminar == "y":
-            file = str(input("Nombre del archivo: "))
+            file = str(input("\033[0;37mNombre del archivo: \033[1;32m"))
             respuesta = delete(my_bucket, file)            
             if respuesta["Deleted"][0]["DeleteMarker"] == True:
-                print("Solicitud enviada")
+                print("\033[0;37mSolicitud enviada")
                 verificar = str(
-                    input("¿Desea verificar si se eliminó correctamente? y/n: ")).lower()
+                    input("\033[0;37m¿Desea verificar si se eliminó correctamente? y/n: \033[1;32m")).lower()
                 if verificar == "y":
-                    print("Lista de audios:\n")
+                    print("\033[0;37mLista de audios:\n")
                     lista, b = list_audios()
                     if not lista:
-                        print("Lista vacia. Intenta nuevamente")
+                        print("\033[0;37mLista vacia. Intenta nuevamente")
             else:
-                print("Error en la solicitud")
+                print("\033[1;31mError en la solicitud")
         else:
             run()
     else:
-        print("\nLista vacia. Intenta nuevamente")
+        print("\033[0;37m\nLista vacia. Intenta nuevamente")
 
     run()
 
 
 def status():
-    statu = {'scheduled': "en peticion", 'inProgress': "en proceso",
+    statu = {'scheduled': "peticion", 'inProgress': "en proceso",
                     'completed': "generado", 'failed': "fallido"}
 
     generado = statu["completed"]      
@@ -63,12 +63,12 @@ def status():
             task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
             s = task_status["SynthesisTask"]["TaskStatus"]
             estado =  statu[s]
-            print("Espera el audio se está {}, puede tomar unos segundos".format(estado))
-            print("Audio " + estado)
+            print("\033[0;37mEspera el audio está en \033[1;33m{}\033[0;37m, puede tomar unos segundos".format(estado))
+            print("\033[0;37mAudio " + estado)
             time.sleep(5)
 
         except:
-            print("Intenta crear primero el audio")
+            print("\033[0;37mIntenta crear primero el audio")
             polly_tarea()
     
     if generado:
@@ -94,7 +94,7 @@ def list_audios():
     lista = []
 
     for s3_files in my_bucket.objects.all():
-        print(s3_files.key)
+        print("\033[1;32m", s3_files.key)
         lista.append(s3_files.key)
 
     return lista, my_bucket
@@ -103,20 +103,20 @@ def list_audios():
 def list_sound():
     lista, my_bucket = list_audios()
     if lista:
-        download = str(input("Descargar un archivo y/n: ")).lower()
+        download = str(input("\033[0;37mDescargar un archivo y/n: \033[1;32m")).lower()
         if download == "y":
-            file = str(input("Nombre del archivo: "))
+            file = str(input("\033[0;37mNombre del archivo: \033[1;32m"))
             try:
                 my_bucket.download_file(file, "{}{}".format(
                     lista_aws["root"], file.replace(" ", "_")))
-                print("Descarga completada")
+                print("\033[0;33mDescarga completada")
             except:
-                print("Este archivo no se encontró")
+                print("\033[1;31mEste archivo no se encontró")
 
         else:
             run()
     else:
-        print("\nLista vacia. Intenta nuevamente")
+        print("\033[0;32m\nLista vacia. Intenta nuevamente")
 
     run()
 
@@ -157,7 +157,7 @@ def polly_tarea():
     
     word = word.replace(" ", "_") + ".mp3"
 
-    print("Task id is {} ".format(taskId))
+    print("\033[0;37mTask id is \033[1;32m{} ".format(taskId))
     status()
     run()
 
@@ -167,24 +167,24 @@ def descargar():
     try:
         file = word
     except:
-        print("Primero crea una palabra o descarga una ya generada en listar")
+        print("\033[0;37mPrimero crea una palabra o descarga una ya generada en listar")
         run()
     
     s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
-    print("Descargando elemento...")
+    print("\033[0;37mDescargando elemento...")
 
     my_bucket.download_file(file, "{}{}".format(
         lista_aws["root"], word))
-    print("Descarga completada")
+    print("\033[1;32mDescarga completada")
 
     run()
 
 
 def solicitud():
     global word
-    word = str(input("Ingresa una palabra/oración: ")).lower()
+    word = str(input("\033[0;37mIngresa una palabra/oración: \033[1;32m")).lower()
     if not word:
         solicitud()
     return word
@@ -192,6 +192,8 @@ def solicitud():
 
 def run():
     pagina = str(input(choise))
+
+    print("\033[0;37m")
 
     if pagina == "1":
         print("Crear audio nuevo")
