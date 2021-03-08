@@ -1,2 +1,2 @@
-# AnkiSelenium
+# Anki-Terminal
 Audio and IPA download
