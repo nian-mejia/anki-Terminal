@@ -16,8 +16,9 @@ def words():
     return word
 
 
-def ingles_example():
-    word = words()
+def ingles_example(word = None):
+    if not word: 
+        word = words()
     url = f'https://www.ingles.com/traductor/{word}'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -26,13 +27,14 @@ def ingles_example():
     for en, es in zip(english, spanish):
         print(en.text, "\n", es.text)
 
-    run()
 
 def run():
     pagina = str(input(choise))
     if pagina == "1":
         print("Buscar ejemplos")
         ingles_example()
+        run()
+        
     elif pagina == "9":
         print("Atras")
         main.inicio()

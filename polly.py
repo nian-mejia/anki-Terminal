@@ -51,8 +51,8 @@ def delete_audio():
     run()
 
 
-def status():
-    statu = {'scheduled': "peticion", 'inProgress': "en proceso",
+def status(word, taskId):
+    statu = {'scheduled': "en petición", 'inProgress': "en proceso",
                     'completed': "generado", 'failed': "fallido"}
 
     generado = statu["completed"]      
@@ -63,8 +63,7 @@ def status():
             task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
             s = task_status["SynthesisTask"]["TaskStatus"]
             estado =  statu[s]
-            print("\033[0;37mEspera el audio está en \033[1;33m{}\033[0;37m, puede tomar unos segundos".format(estado))
-            print("\033[0;37mAudio " + estado)
+            print("\033[0;37mEspera el audio \033[1;33m{}\033[0;37m, puede tomar unos segundos".format(estado))
             time.sleep(5)
 
         except:
@@ -72,13 +71,11 @@ def status():
             polly_tarea()
     
     if generado:
-        global word
         copy(taskId + ".mp3", word)
         s3 = sessionS3()
         my_bucket = s3.Bucket(lista_aws["buckets"])
         delete(my_bucket, taskId + ".mp3")
     
-    run()
 
 def copy(old_name, new_name):
     s3 = sessionS3()
@@ -112,12 +109,10 @@ def list_sound():
                 print("\033[0;33mDescarga completada")
             except:
                 print("\033[1;31mEste archivo no se encontró")
-
         else:
             run()
     else:
         print("\033[0;32m\nLista vacia. Intenta nuevamente")
-
     run()
 
 
@@ -137,12 +132,12 @@ def sessionS3():
     return s3
 
 
-def polly_tarea():
-    global word 
-
-    word = solicitud()
+def polly_tarea(word = None):
+    
+    if not word:
+        word = solicitud()
+        
     polly_client = cliente()
-
     response = polly_client.start_speech_synthesis_task(
         Engine='neural',
         LanguageCode='en-US',
@@ -152,18 +147,19 @@ def polly_tarea():
         VoiceId='Salli',
         Text=word)
 
-    global taskId
     taskId = response['SynthesisTask']['TaskId']
     
-    word = word.replace(" ", "_") + ".mp3"
+    global newWord
+    newWord = word.replace(" ", "_") + ".mp3"
 
     print("\033[0;37mTask id is \033[1;32m{} ".format(taskId))
-    status()
-    run()
+    status(newWord, taskId)
+    return newWord
 
+def descargar(word = None):
+    global newWord
 
-def descargar():
-    global word
+    word = newWord
     try:
         file = word
     except:
@@ -173,13 +169,13 @@ def descargar():
     s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
-    print("\033[0;37mDescargando elemento...")
+    print("\033[1;32mDescargando elemento...")
 
     my_bucket.download_file(file, "{}{}".format(
         lista_aws["root"], word))
     print("\033[1;32mDescarga completada")
 
-    run()
+    
 
 
 def solicitud():
@@ -198,10 +194,12 @@ def run():
     if pagina == "1":
         print("Crear audio nuevo")
         polly_tarea()
+        run()
 
     elif pagina == "2":
         print("Descargar audio nuevo")
         descargar()
+        run()
 
     elif pagina == "3":
         print("Descargar audios creados")

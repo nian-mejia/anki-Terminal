@@ -19,6 +19,10 @@ choise = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
 def all():
     word = str(input("Ingresa una palabra: ")).lower()
     ipa.ipa_cmu(word)
+    translator.googletrans(word)
+    example.ingles_example(word)
+    word = polly.polly_tarea(word)
+    polly.descargar(word)
 
 def inicio():
     pagina = str(input(choise))

@@ -13,10 +13,10 @@ Ingresa un número: """
 
 choise  = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
 
-def do_translat(translator):
-    word = str(input("Ingresa una palabra: ")).lower()
+def do_translat(translator, word = None):
+   
     if not word:
-        do_translat()
+        word = str(input("Ingresa una palabra: ")).lower()
 
     if translator == LingueeTranslator:
         try:
@@ -49,10 +49,10 @@ def linguee():
 
             
 
-def googletrans():
-    translated = do_translat(GoogleTranslator)
+def googletrans(word = None):
+    translated = do_translat(GoogleTranslator, word)
     if translated:
-        print("\033[1;32m", translated.capitalize())
+        print(f"\033[1;32m{translated.capitalize()}")
 
 def run():
     pagina = str(input(choise))
