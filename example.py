@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import main
+from blessings import Terminal
+t = Terminal()
 
 choise = """
 [1] Buscar ejemplos
@@ -8,7 +10,7 @@ choise = """
 
 Ingresa un número: """
 
-choise  = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
+choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
 
 
 def words():

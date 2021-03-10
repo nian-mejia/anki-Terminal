@@ -3,6 +3,8 @@ import numpy as np
 from deep_translator import LingueeTranslator
 from deep_translator import GoogleTranslator
 from tabulate import tabulate
+from blessings import Terminal
+t = Terminal()
 
 choise = """
 [1] Linguee
@@ -11,7 +13,7 @@ choise = """
     
 Ingresa un número: """
 
-choise  = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
+choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
 
 def do_translat(translator, word = None):
    
@@ -45,14 +47,14 @@ def linguee():
             l = len(translate) / 2 
             a = np.array(translate).reshape(int(l), 2)
         
-        print("\033[1;32m", tabulate(a))
+        print(f"{t.bold_green}{tabulate(a)}")
 
             
 
 def googletrans(word = None):
     translated = do_translat(GoogleTranslator, word)
     if translated:
-        print(f"\033[1;32m{translated.capitalize()}")
+        print(f"{t.bold_green}{translated.capitalize()}")
 
 def run():
     pagina = str(input(choise))

@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import eng_to_ipa as engipa
 import main
+from blessings import Terminal
+t = Terminal()
 
 choise = """
 [1] IPA_Lexico
@@ -10,7 +12,7 @@ choise = """
 
 Ingresa un número: """
 
-choise = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
+choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ",  f"{t.normal}")
 
 def ipa_requests(url, selector):
     word = str(input("Ingresa una palabra: ")).lower()
@@ -28,7 +30,7 @@ def cleaner(ipa):
     elif "/" not in ipa:
         ipa = "/"+ipa+"/"
 
-    return "\033[1;32m"+ipa
+    return f"{t.bold_green}"+ipa
 
 def lexico():
     url = "https://www.lexico.com/en/definition/"

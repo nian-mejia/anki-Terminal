@@ -2,6 +2,8 @@ import ipa
 import translator
 import polly
 import example
+from blessings import Terminal
+t = Terminal()
 
 
 choise = """
@@ -14,7 +16,8 @@ choise = """
 
 Ingresa un número: """
 
-choise = choise.replace("[", "\033[1;33m[").replace(" ", " \033[0;37m")
+choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
+
 
 def all():
     word = str(input("Ingresa una palabra: ")).lower()
