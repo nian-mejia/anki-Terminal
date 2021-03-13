@@ -5,6 +5,10 @@ import time
 import yaml
 from boto3.session import Session
 from blessings import Terminal
+from progress.bar import IncrementalBar
+
+
+# Create object text to change the color
 t = Terminal()
 
 with open(r'aws_key.yaml') as file_aws:
@@ -59,13 +63,18 @@ def status(word, taskId):
 
     generado = statu["completed"]      
     estado   = statu["scheduled"]   
+    
+    # Create incrementalBar
+    bar = IncrementalBar(f"{t.normal}Creating audio{t.bold_green}", max=4)
+
     while estado != generado:
         try:
             polly_client = cliente()
             task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
             s = task_status["SynthesisTask"]["TaskStatus"]
             estado =  statu[s]
-            print(f"{t.normal}Espera el audio {t.bold_green}{estado}{t.normal}, puede tomar unos segundos")
+            #print(f"{t.normal}Espera el audio {t.bold_green}{estado}{t.normal}, puede tomar unos segundos")
+            bar.next()
             time.sleep(5)
 
         except:
@@ -73,6 +82,7 @@ def status(word, taskId):
             polly_tarea()
     
     if generado:
+        bar.finish()
         copy(taskId + ".mp3", word)
         s3 = sessionS3()
         my_bucket = s3.Bucket(lista_aws["buckets"])
