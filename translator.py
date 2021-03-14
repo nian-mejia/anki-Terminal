@@ -10,13 +10,13 @@ choise = """
 [1] Linguee
 [2] Google Trasnslator
 [9] Atras
-    
+
 Ingresa un número: """
 
 choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
 
 def do_translat(translator, word = None):
-   
+
     if not word:
         word = str(input("Ingresa una palabra: ")).lower()
 
@@ -39,17 +39,17 @@ def linguee():
 
     translate = do_translat(LingueeTranslator)
     if translate:
-        l = len(translate) / 2 
+        l = len(translate) / 2
         if l == int(l):
             a = np.array(translate).reshape(int(l), 2)
         else:
             translate.append(" ")
-            l = len(translate) / 2 
+            l = len(translate) / 2
             a = np.array(translate).reshape(int(l), 2)
-        
+
         print(f"{t.bold_green}{tabulate(a)}")
 
-            
+
 
 def googletrans(word = None):
     translated = do_translat(GoogleTranslator, word)

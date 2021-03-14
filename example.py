@@ -36,7 +36,7 @@ def run():
         print("Buscar ejemplos")
         ingles_example()
         run()
-        
+
     elif pagina == "9":
         print("Atras")
         main.inicio()

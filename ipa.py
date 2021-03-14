@@ -75,7 +75,7 @@ def ipa_cmu(word = None):
 
     if not word:
         word = str(input("Ingresa una palabra: ")).lower()
-    
+
     word_list = word.split()
 
     if len(word_list) == 1:

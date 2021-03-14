@@ -21,7 +21,7 @@ choise = """
 [3] Descargar audios creados
 [4] Eliminar audio creados
 [9] Atras
-    
+
 Ingresa un número: """
 
 choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
@@ -37,7 +37,7 @@ def delete_audio():
         eliminar = str(input(f"{t.normal}Eliminar un archivo y/n: {t.bold_yellow}")).lower()
         if eliminar == "y":
             file = str(input(f"{t.normal}Nombre del archivo: {t.bold_yellow}"))
-            respuesta = delete(my_bucket, file)            
+            respuesta = delete(my_bucket, file)
             if respuesta["Deleted"][0]["DeleteMarker"] == True:
                 print(f"{t.normal}Solicitud enviada")
                 verificar = str(
@@ -61,9 +61,9 @@ def status(word, taskId):
     statu = {'scheduled': "en petición", 'inProgress': "en proceso",
                     'completed': "generado", 'failed': "fallido"}
 
-    generado = statu["completed"]      
-    estado   = statu["scheduled"]   
-    
+    generado = statu["completed"]
+    estado   = statu["scheduled"]
+
     # Create incrementalBar
     bar = IncrementalBar(f"{t.normal}Create audio{t.bold_green}", max=4)
 
@@ -80,19 +80,19 @@ def status(word, taskId):
         except:
             print(f"{t.normal}Intenta crear primero el audio")
             polly_tarea()
-    
+
     if generado:
         bar.finish()
         copy(taskId + ".mp3", word)
         s3 = sessionS3()
         my_bucket = s3.Bucket(lista_aws["buckets"])
         delete(my_bucket, taskId + ".mp3")
-    
+
 
 def copy(old_name, new_name):
     s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
-    my_bucket.copy({"Bucket" : lista_aws["buckets"], 
+    my_bucket.copy({"Bucket" : lista_aws["buckets"],
                     'Key' : old_name},
                      Key = new_name)
 
@@ -145,10 +145,10 @@ def sessionS3():
 
 
 def polly_tarea(word = None):
-    
+
     if not word:
         word = solicitud()
-        
+
     polly_client = cliente()
     response = polly_client.start_speech_synthesis_task(
         Engine='neural',
@@ -160,7 +160,7 @@ def polly_tarea(word = None):
         Text=word)
 
     taskId = response['SynthesisTask']['TaskId']
-    
+
     global newWord
     newWord = word.replace(" ", "_") + ".mp3"
 
@@ -177,7 +177,7 @@ def descargar(word = None):
     except:
         print(f"{t.normal}Primero crea una palabra o descarga una ya generada en listar")
         run()
-    
+
     s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
 
@@ -187,7 +187,7 @@ def descargar(word = None):
         lista_aws["root"], word))
     print(f"{t.bold_green}Descarga completada")
 
-    
+
 
 
 def solicitud():
