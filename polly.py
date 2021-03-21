@@ -65,7 +65,7 @@ def status(word, taskId):
     estado   = statu["scheduled"]   
     
     # Create incrementalBar
-    bar = IncrementalBar(f"{t.normal}Creating audio{t.bold_green}", max=4)
+    bar = IncrementalBar(f"{t.normal}Create audio{t.bold_green}", max=4)
 
     while estado != generado:
         try:
