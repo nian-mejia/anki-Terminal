@@ -8,7 +8,7 @@ t = Terminal()
 
 choise = """
 [1] Linguee
-[2] Google Trasnslator
+[2] Google translator
 [9] Atras
 
 Ingresa un número: """
