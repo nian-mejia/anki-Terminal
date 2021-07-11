@@ -2,5 +2,6 @@
 aws_key.yaml
 /sounds
 /env
+/venv
 .vscode/settings.json
 
