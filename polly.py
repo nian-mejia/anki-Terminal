@@ -1,7 +1,6 @@
 import main
 import time
 import boto3
-import time
 import yaml
 from boto3.session import Session
 from blessings import Terminal

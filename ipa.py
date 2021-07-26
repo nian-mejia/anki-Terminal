@@ -12,7 +12,7 @@ choise = """
 
 Ingresa un número: """
 
-choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ",  f"{t.normal}")
+choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ",  f"{t.normal} ")
 
 def ipa_requests(url, selector):
     word = str(input("Ingresa una palabra: ")).lower()
