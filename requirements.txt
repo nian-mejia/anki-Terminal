@@ -1,0 +1,6 @@
+requests~=2.26.0
+beautifulsoup4~=4.9.3
+blessings~=1.7
+boto3~=1.18.26
+numpy~=1.21.2
+tabulate~=0.8.9
