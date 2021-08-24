@@ -4,6 +4,7 @@ from deep_translator import LingueeTranslator
 from deep_translator import GoogleTranslator
 from tabulate import tabulate
 from blessings import Terminal
+
 t = Terminal()
 
 choise = """
@@ -15,8 +16,8 @@ Ingresa un número: """
 
 choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
 
-def do_translat(translator, word = None):
 
+def do_translat(translator, word=None):
     if not word:
         word = str(input("Ingresa una palabra: ")).lower()
 
@@ -35,8 +36,8 @@ def do_translat(translator, word = None):
         except:
             print("Error")
 
-def linguee():
 
+def linguee():
     translate = do_translat(LingueeTranslator)
     if translate:
         l = len(translate) / 2
@@ -50,11 +51,11 @@ def linguee():
         print(f"{t.bold_green}{tabulate(a)}")
 
 
-
-def googletrans(word = None):
+def googletrans(word=None):
     translated = do_translat(GoogleTranslator, word)
     if translated:
         print(f"{t.bold_green}{translated.capitalize()}")
+
 
 def run():
     pagina = str(input(choise))

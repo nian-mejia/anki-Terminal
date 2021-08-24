@@ -4,3 +4,7 @@ blessings~=1.7
 boto3~=1.18.26
 numpy~=1.21.2
 tabulate~=0.8.9
+eng-to-ipa~=0.0.2
+deep-translator~=1.5.4
+pyyaml~=5.4.1
+progress~=1.6

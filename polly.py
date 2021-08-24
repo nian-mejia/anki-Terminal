@@ -6,7 +6,6 @@ from boto3.session import Session
 from blessings import Terminal
 from progress.bar import IncrementalBar
 
-
 # Create object text to change the color
 t = Terminal()
 
@@ -25,10 +24,12 @@ Ingresa un número: """
 
 choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
 
+
 def delete(my_bucket, name_file):
     respuesta = my_bucket.delete_objects(Bucket=lista_aws["buckets"],
-                                        Delete={'Objects': [{'Key': name_file}]})
+                                         Delete={'Objects': [{'Key': name_file}]})
     return respuesta
+
 
 def delete_audio():
     lista, my_bucket = list_audios()
@@ -58,10 +59,10 @@ def delete_audio():
 
 def status(word, taskId):
     statu = {'scheduled': "en petición", 'inProgress': "en proceso",
-                    'completed': "generado", 'failed': "fallido"}
+             'completed': "generado", 'failed': "fallido"}
 
     generado = statu["completed"]
-    estado   = statu["scheduled"]
+    estado = statu["scheduled"]
 
     # Create incrementalBar
     bar = IncrementalBar(f"{t.normal}Create audio{t.bold_green}", max=4)
@@ -71,8 +72,8 @@ def status(word, taskId):
             polly_client = cliente()
             task_status = polly_client.get_speech_synthesis_task(TaskId=taskId)
             s = task_status["SynthesisTask"]["TaskStatus"]
-            estado =  statu[s]
-            #print(f"{t.normal}Espera el audio {t.bold_green}{estado}{t.normal}, puede tomar unos segundos")
+            estado = statu[s]
+            # print(f"{t.normal}Espera el audio {t.bold_green}{estado}{t.normal}, puede tomar unos segundos")
             bar.next()
             time.sleep(5)
 
@@ -91,9 +92,10 @@ def status(word, taskId):
 def copy(old_name, new_name):
     s3 = sessionS3()
     my_bucket = s3.Bucket(lista_aws["buckets"])
-    my_bucket.copy({"Bucket" : lista_aws["buckets"],
-                    'Key' : old_name},
-                     Key = new_name)
+    my_bucket.copy({"Bucket": lista_aws["buckets"],
+                    'Key': old_name},
+                   Key=new_name)
+
 
 def list_audios():
     s3 = sessionS3()
@@ -143,8 +145,7 @@ def sessionS3():
     return s3
 
 
-def polly_tarea(word = None):
-
+def polly_tarea(word=None):
     if not word:
         word = solicitud()
 
@@ -167,7 +168,8 @@ def polly_tarea(word = None):
     status(newWord, taskId)
     return newWord
 
-def descargar(word = None):
+
+def descargar(word=None):
     global newWord
 
     word = newWord
@@ -185,8 +187,6 @@ def descargar(word = None):
     my_bucket.download_file(file, "{}{}".format(
         lista_aws["root"], word))
     print(f"{t.bold_green}Descarga completada")
-
-
 
 
 def solicitud():

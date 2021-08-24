@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import eng_to_ipa as engipa
 import main
 from blessings import Terminal
+
 t = Terminal()
 
 choise = """
@@ -12,7 +13,8 @@ choise = """
 
 Ingresa un número: """
 
-choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ",  f"{t.normal} ")
+choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f"{t.normal} ")
+
 
 def ipa_requests(url, selector):
     word = str(input("Ingresa una palabra: ")).lower()
@@ -28,9 +30,10 @@ def cleaner(ipa):
     if not ipa:
         return ipa
     elif "/" not in ipa:
-        ipa = "/"+ipa+"/"
+        ipa = "/" + ipa + "/"
 
-    return f"{t.bold_green}"+ipa
+    return f"{t.bold_green}" + ipa
+
 
 def lexico():
     url = "https://www.lexico.com/en/definition/"
@@ -60,8 +63,7 @@ def lexico():
         print("Word not find")
 
 
-
-def ipa_cmu(word = None):
+def ipa_cmu(word=None):
     def palabra(word):
         palabra = engipa.ipa_list(word)
         for i in palabra[0]:
@@ -85,7 +87,6 @@ def ipa_cmu(word = None):
         frase(word)
     else:
         print("Error")
-
 
 
 def run():

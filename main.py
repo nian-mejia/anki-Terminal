@@ -3,8 +3,8 @@ import translator
 import polly
 import example
 from blessings import Terminal
-t = Terminal()
 
+t = Terminal()
 
 choise = """
 [1] IPA
@@ -26,6 +26,7 @@ def all():
     example.ingles_example(word)
     word = polly.polly_tarea(word)
     polly.descargar(word)
+
 
 def inicio():
     pagina = str(input(choise))
