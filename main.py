@@ -16,6 +16,7 @@ choise = """
 
 Ingresa un número: """
 
+
 choise = choise.replace("[", f"{t.bold_yellow}[").replace(" ", f" {t.normal}")
 
 
